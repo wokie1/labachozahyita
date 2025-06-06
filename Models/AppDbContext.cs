@@ -50,10 +50,34 @@ namespace Models
                 .Property(a => a.Quantity)
                 .HasColumnName("Availability");
 
+            modelBuilder.Entity<Availability>()
+                .HasOne<Store>()
+                .WithMany()
+                .HasForeignKey(a => a.StoreId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Availability>()
+                .HasOne<Product>()
+                .WithMany()
+                .HasForeignKey(a => a.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             // Настройка таблицы Sale (композитный ключ)
             modelBuilder.Entity<Sale>()
                 .ToTable("Sales")
                 .HasKey(s => new { s.CustomerId, s.ProductId, s.SaleDate });
+
+            modelBuilder.Entity<Sale>()
+                .HasOne<Customer>()
+                .WithMany()
+                .HasForeignKey(s=>s.CustomerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Sale>()
+                .HasOne<Product>()
+                .WithMany()
+                .HasForeignKey(s=>s.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Остальные таблицы
             modelBuilder.Entity<Customer>()
