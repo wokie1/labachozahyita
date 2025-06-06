@@ -33,7 +33,10 @@ namespace Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Настройка таблицы Product
-            modelBuilder.Entity<Product>().ToTable("Products");
+            modelBuilder.Entity<Product>()
+                .ToTable("Products")
+                .HasKey(p=>p.Id);
+
             modelBuilder.Entity<Product>()
                 .Property(p => p.ExpiryDate)
                 .HasColumnName("Date");
@@ -53,8 +56,13 @@ namespace Models
                 .HasKey(s => new { s.CustomerId, s.ProductId, s.SaleDate });
 
             // Остальные таблицы
-            modelBuilder.Entity<Customer>().ToTable("Customers");
-            modelBuilder.Entity<Store>().ToTable("Stores");
+            modelBuilder.Entity<Customer>()
+                .ToTable("Customers")
+                .HasKey(c=>c.Id);
+
+            modelBuilder.Entity<Store>()
+                .ToTable("Stores")
+                .HasKey(s=>s.Id);
         }
     }
 }
